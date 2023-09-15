@@ -14,12 +14,14 @@ class Request
         {
             return $path;
         }
-        $path = substr($path, 0 , $position);
+        return substr($path, 0 , $position);
     }
 
     public function getMethod()
     {
 
+
+        return strtolower($_SERVER['REQUEST_METHOD']);
 
     }
 }

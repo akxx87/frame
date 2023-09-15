@@ -18,29 +18,37 @@ class Router
     public function get($path, $callback)
     {
 
+
         $this->routers['get'][$path] = $callback;
+
+
     }
 
     public function resolve()
     {
 
         $path = $this->request->getPatch();
-        $method = $this->routers->getMethod();
+        $method = $this->request->getMethod();
         $callback = $this->routers[$method][$path] ?? false;
+
         if($callback === false)
         {
-            echo "not fund";
-            exit;
+            return "not fund";
         }
 
+        if(is_string($callback))
+        {
+            return $this->renederView($callback);
+        }
         call_user_func($callback);
 
     }
 
-    public function getMethod()
+    public function renederView($view)
     {
 
-        return strtolower($_SERVER['REQUEST_METHOD']);
+        include_once __DIR__."/../views/$view.php";
 
     }
+
 }
