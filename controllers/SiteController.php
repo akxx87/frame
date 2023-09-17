@@ -2,12 +2,16 @@
 
 namespace app\controllers;
 use app\core\Application;
+use app\core\Controller;
+use app\core\Request;
+use Illuminate\Support\Facades\App;
+
 /**
  *
  * @package qpp\controllers
  */
 
-class SiteController
+class SiteController extends Controller
 {
 
     public function home()
@@ -16,11 +20,13 @@ class SiteController
       $params = [
           'name' => "codeholic"
       ];
-        return Application::$app->router->renederView('home', $params);
+        return $this->reneder('home', $params);
     }
 
-    public function action()
+    public function action(Request $request)
     {
+
+       $body = $request->getBody();
 
         return 'handlig data gfggg';
 
@@ -30,7 +36,7 @@ class SiteController
     public function contact()
     {
 
-        return Application::$app->router->renederView('contact');
+        return $this->reneder('contact');
 
     }
 
