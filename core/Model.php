@@ -9,7 +9,7 @@ abstract class Model
     public const RULE_EMAIL = 'email';
     public const RULE_MIN = 'min';
     public const RULE_MAX= 'max';
-    public const RULE_MATCH= 'matche';
+    public const RULE_MATCH= 'match';
    /* public const RULE_REQUIRED = 'required';*/
 
 
@@ -52,11 +52,15 @@ abstract class Model
                     }
                     if($ruleName === self::RULE_MIN && strlen($value) < $rule['min'])
                     {
-                        $this->addError($attribute, self::RULE_MIN);
+                        $this->addError($attribute, self::RULE_MIN, $rule);
                     }
                     if($ruleName === self::RULE_MAX && strlen($value) > $rule['max'])
                     {
                         $this->addError($attribute, self::RULE_MAX, $rule);
+                    }
+                    if($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']})
+                    {
+                        $this->addError($attribute, self::RULE_MATCH, $rule);
                     }
             }
         }
@@ -68,6 +72,12 @@ abstract class Model
     {
 
             $message = $this->errorMesseges()[$rules] ?? '';
+
+            foreach ($params as $key => $param)
+            {
+                $message = str_replace("{{$key}}", $param, $message);
+
+            }
 
             $this->errors[$attribute][] =$message;
 
@@ -85,6 +95,20 @@ abstract class Model
             self::RULE_MATCH => 'this is required {match}',
 
         ];
+
+    }
+
+    public function hasError($atrbute)
+    {
+
+        return $this->errors[$atrbute] ?? false;
+
+
+    }
+
+    public function getFirstError($atrbute)
+    {
+        return $this->errors[$atrbute][0] ?? false;
 
     }
 

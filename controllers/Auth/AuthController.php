@@ -34,7 +34,6 @@ class AuthController extends Controller
                 return 'Success';
             }
 
-            var_dump($registermodel->errors);
 
             return $this->reneder('register', [
 
@@ -50,4 +49,6 @@ class AuthController extends Controller
         ]);
 
     }
+
+
 }
