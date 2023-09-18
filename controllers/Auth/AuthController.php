@@ -2,9 +2,10 @@
 
 namespace app\controllers\Auth;
 
+use app\core\Application;
 use app\core\Controller;
 use app\core\Request;
-use app\models\RegisterModel;
+use app\models\User;
 
 class AuthController extends Controller
 {
@@ -21,23 +22,23 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
-        $registermodel = new RegisterModel();
+        $user = new User();
 
         if($request->isPost())
         {
 
-            $registermodel->loadData($request->getBody());
+            $user->loadData($request->getBody());
 
 
-            if($registermodel->validate() && $registermodel->register())
+            if($user->validate() && $user->save())
             {
-                return 'Success';
+                Application::$app->response->redirect('/');
             }
 
 
             return $this->reneder('register', [
 
-                'model' => $registermodel
+                'model' => $user
             ]);
 
         }
@@ -45,7 +46,7 @@ class AuthController extends Controller
 
         return $this->reneder('register', [
 
-            'model' => $registermodel
+            'model' => $user
         ]);
 
     }
