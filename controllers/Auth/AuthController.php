@@ -32,7 +32,9 @@ class AuthController extends Controller
 
             if($user->validate() && $user->save())
             {
+                Application::$app->session->setFlash('success', 'register complead');
                 Application::$app->response->redirect('/');
+                exit;
             }
 
 
