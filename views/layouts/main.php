@@ -1,4 +1,5 @@
-<?php use app\core\Application ;?>
+<?php use app\core\Application;
+ ?>
 
 <!doctype html>
 <html lang="en">
@@ -39,15 +40,19 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
+                <?php if(Application::$app->isGuest()):?>
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/register">Register</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Welcome <?php echo Application::$app->user->usergetNick() ;?> </a>
+                        Logout
+                    </li>
+                <?php endif; ?>
             </ul>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

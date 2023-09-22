@@ -7,6 +7,8 @@ namespace app\core;
 
     abstract public function tableName(): string;
     abstract public function attributes(): array;
+
+    abstract public function primaryKey(): string;
     public function save()
     {
 
@@ -24,10 +26,29 @@ namespace app\core;
         return true;
 
     }
-
     public static function prepare($sql)
     {
        return Application::$app->db->pdo->prepare($sql);
+
+
+    }
+
+    public function findOne($where)
+    {
+
+        $tableName = static::tableName();
+        $attributes = array_keys($where);
+        $sql = implode("AND ",  array_map(fn($attr) => "$attr =:$attr", $attributes));
+        $statemant = self::prepare("SELECT * FROM $tableName WHERE $sql");
+        foreach ($where as $key => $item)
+        {
+                $statemant->bindValue(":$key" , $item);
+
+        }
+        $statemant ->execute();
+        return $statemant->fetchObject(static::class);
+
+
 
 
     }

@@ -52,23 +52,23 @@ abstract class Model
                     }
                     if($ruleName === self::RULE_REQUIRED && !$value)
                     {
-                        $this->addError($attribute, self::RULE_REQUIRED);
+                        $this->addErrorForRule($attribute, self::RULE_REQUIRED);
                     }
                     if($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL))
                     {
-                        $this->addError($attribute, self::RULE_EMAIL);
+                        $this->addErrorForRule($attribute, self::RULE_EMAIL);
                     }
                     if($ruleName === self::RULE_MIN && strlen($value) < $rule['min'])
                     {
-                        $this->addError($attribute, self::RULE_MIN, $rule);
+                        $this->addErrorForRule($attribute, self::RULE_MIN, $rule);
                     }
                     if($ruleName === self::RULE_MAX && strlen($value) > $rule['max'])
                     {
-                        $this->addError($attribute, self::RULE_MAX, $rule);
+                        $this->addErrorForRule($attribute, self::RULE_MAX, $rule);
                     }
                     if($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']})
                     {
-                        $this->addError($attribute, self::RULE_MATCH, $rule);
+                        $this->addErrorForRule($attribute, self::RULE_MATCH, $rule);
                     }
                     if($ruleName === self::RULE_UNIQUE)
                     {
@@ -82,7 +82,7 @@ abstract class Model
                         $record =  $statement->fetchObject();
                         if($record)
                         {
-                            $this->addError($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
+                            $this->addErrorForRule($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
 
                         }
 
@@ -98,7 +98,7 @@ abstract class Model
         return $this->labels()[$attribute] ?? $attribute;
     }
 
-    public function addError(string $attribute, string $rules, $params = [])
+    private function addErrorForRule(string $attribute, string $rules, $params = [])
     {
 
             $message = $this->errorMesseges()[$rules] ?? '';
@@ -110,6 +110,14 @@ abstract class Model
             }
 
             $this->errors[$attribute][] =$message;
+
+    }
+
+    public function addError(string $attribute, string $message)
+    {
+
+
+        $this->errors[$attribute][] =$message;
 
     }
 

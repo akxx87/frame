@@ -1,5 +1,5 @@
 
-<h1>login</h1>
+<h1>REGISTER USER</h1>
 <?php $form =  \app\core\form\Form::begin('', "post") ?>
 <div class="row">
     <div class="col">

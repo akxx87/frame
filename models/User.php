@@ -1,10 +1,9 @@
 <?php
 
 namespace app\models;
-use app\core\DbModel;
-use app\core\Model;
+use app\core\UserModel;
 
-class User extends DbModel
+class User extends UserModel
 {
 
     const STATUS_INACTIVE = 0;
@@ -62,5 +61,16 @@ class User extends DbModel
 
         ];
     }
+
+    public function primaryKey(): string
+    {
+        return 'id';
+    }
+
+    public function usergetNick(): string
+    {
+       return $this->firstname. ' '. $this->lastname;
+    }
+
 
 }
