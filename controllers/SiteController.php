@@ -4,6 +4,8 @@ namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
 use app\core\Request;
+use app\core\Response;
+use app\models\ContactForm;
 use Illuminate\Support\Facades\App;
 
 /**
@@ -33,10 +35,26 @@ class SiteController extends Controller
     }
 
 
-    public function contact()
+    public function contact(Request $request , Response $response)
     {
 
-        return $this->reneder('contact');
+        $contact = new ContactForm();
+        if($request ->isPost())
+        {
+            $contact->loadData($request->getBody());
+            if($contact->validate() && $contact->send())
+                {
+                    Application::$app->session->setFlash('success', 'thanks for contact');
+                    return $response->redirect('/contact');
+                }
+
+        }
+
+        return $this->reneder('contact', [
+
+            'model' => $contact
+
+        ]);
 
     }
 

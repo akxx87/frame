@@ -25,7 +25,7 @@ class Controller
     public function reneder($view , $params = [])
     {
 
-        return Application::$app->router->renederView($view , $params);
+        return Application::$app->view->renederView($view , $params);
     }
 
 
