@@ -14,8 +14,9 @@ class Application
     public Database $db;
     public Session $session;
     public static Application $app;
-    public Controller $controller;
+    public ?Controller $controller = null;
     public ?DbModel $user;
+    public string $layout = 'main';
 
     /**
      * @return Controller
@@ -57,8 +58,15 @@ class Application
     public function run(): void
     {
 
-       echo $this->router->resolve();
+        try {
+            echo $this->router->resolve();
 
+        }catch (\Exception $e){
+            $this->response->setStatusCode($e->getCode());
+            echo $this->router->renederView('_error', [
+                'exception' => $e
+            ]);
+        }
 
     }
 

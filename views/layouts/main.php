@@ -49,8 +49,12 @@
                 </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Welcome <?php echo Application::$app->user->usergetNick() ;?> </a>
-                        Logout
+                        <a class="nav-link" href="/profile">Profile </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Welcome <?php echo Application::$app->user->usergetNick() ;?>
+                        ( Logout)</a>
+
                     </li>
                 <?php endif; ?>
             </ul>
